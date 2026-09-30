@@ -3,7 +3,6 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Завантажуємо потрібний .env файл залежно від ENV_NAME (за замовчуванням .env.qauto)
 const envFile = process.env.ENV_NAME ? `.env.${process.env.ENV_NAME}` : '.env.qauto';
 dotenv.config({ path: path.resolve(__dirname, envFile) });
 
@@ -32,8 +31,13 @@ export default defineConfig({
 
   projects: [
     {
+      name: 'setup',
+      testMatch: /.*\.setup\.js/,
+    },
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      dependencies: ['setup'],
     },
   ],
 });
